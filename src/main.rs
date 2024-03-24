@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use std::{hash::{Hash, Hasher}, ops::{Add, Mul}, result};
 use halo2_proofs::arithmetic::Field;
 use rand::Rng;
@@ -44,7 +45,7 @@ impl Eddsa {
 mod tests{
     use super::*;
     #[test]
-fn test() {
+fn protocol_test() {
     //there are 5 player join teh key generation
     let player1 = generate_random_u128_in_range(1, std::u64::MAX as u128);
     let player2 = generate_random_u128_in_range(1, std::u64::MAX as u128);
@@ -181,6 +182,7 @@ fn test() {
     let pri_key_equal = pallas::Scalar::eq(&check2, &check3);
     assert_eq!(pri_key_equal,true);
 
+    //here we use eddsa to verify signature
     let circuit = Eddsa{
         response : response,
         pub_key : pub_key,

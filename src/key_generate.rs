@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use std::{ops::{Add, Mul}, result};
 use halo2_proofs::arithmetic::Field;
 use rand::Rng;
@@ -182,21 +183,21 @@ mod tests{
             member : 5,
             self_num : 1,
         };
-        let (user1_prikey_share, user1_pubket_share) = user1.collect();
+        let (_user1_prikey_share, user1_pubket_share) = user1.collect();
         
         let user2 = CollectOutputKeyShare{
             key_share : user_vec.clone(),
             member : 5,
             self_num : 2,
         };
-        let (user2_prikey_share, user2_pubket_share) = user2.collect();
+        let (_user2_prikey_share, user2_pubket_share) = user2.collect();
     
         let user3 = CollectOutputKeyShare{
             key_share : user_vec.clone(),
             member : 5,
             self_num : 3,
         };
-        let (user3_prikey_share, user3_pubket_share) = user3.collect();
+        let (_user3_prikey_share, user3_pubket_share) = user3.collect();
     
         let pub_key = CalculatePubKey {
             degree : 3,

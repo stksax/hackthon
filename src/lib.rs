@@ -1,4 +1,4 @@
-
+#![allow(unused_imports)]
 use primal::Primes;
 use rand::seq::SliceRandom;
 use rand::Rng;
