@@ -1,4 +1,4 @@
-use std::ops::{Add, Mul};
+use std::{ops::{Add, Mul}, result};
 use halo2_proofs::arithmetic::Field;
 use rand::Rng;
 
@@ -93,6 +93,32 @@ impl CalculatePubKey {
     }
 }
 
+pub struct CalculatePriKey {
+    pub self_coefficient : u128,
+    pub coefficient : [u128;2],
+    pub pri_key : u128,
+}
+
+impl CalculatePriKey {
+    pub fn calculate(&self) -> pallas::Scalar{
+        let mut ans =  self.pri_key;
+        ans *= self.coefficient[0];
+        ans *= self.coefficient[1];
+        let mut result = pallas::Scalar::from_u128(ans);
+        let mut dev1 = pallas::Scalar::from_u128(self.self_coefficient);
+        let a = pallas::Scalar::from_u128(self.coefficient[0]);
+        dev1 = pallas::Scalar::sub(&dev1, &a);
+        let mut dev = pallas::Scalar::from_u128(self.self_coefficient);
+        let b = pallas::Scalar::from_u128(self.coefficient[1]);
+        dev = pallas::Scalar::sub(&dev, &b);
+        dev = pallas::Scalar::mul(&dev, &dev1);
+        dev = pallas::Scalar::invert(&dev).unwrap();
+
+        result = pallas::Scalar::mul(&result, &dev);
+        result
+    }
+}
+
 
 #[cfg(test)]
 mod tests{
@@ -182,7 +208,7 @@ mod tests{
         let check = pallas::Scalar::from_u128(prik);
         let generator = pallas::Affine::generator();
         let check2 = pallas::Affine::mul(generator, check).to_affine();
-        let ans = pallas::Affine::eq(&result, &check2);
+        let ans: bool = pallas::Affine::eq(&result, &check2);
   
         assert_eq!(ans, true)
     }
